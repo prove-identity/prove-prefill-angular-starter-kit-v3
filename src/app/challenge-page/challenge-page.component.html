@@ -1,0 +1,20 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" placeholder="Ex. John Doe">
+      <mat-error *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+        {{ getNameErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" placeholder="Ex. john.doe@example.com">
+      <mat-error *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+        {{ getEmailErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+  
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+  </form>
+  
