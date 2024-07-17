@@ -4,6 +4,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-challenge-page',
@@ -15,16 +17,17 @@ import { NgIf } from '@angular/common';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    NgIf
-  ],
+    NgIf,
+    RouterModule
+  ]
 })
 export class ChallengePageComponent {
   form: FormGroup;
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]]
+      ssn: ['', [Validators.required, Validators.minLength(4)]],
+      phone: ['', [Validators.required, Validators.email]]
     });
   }
 
@@ -33,28 +36,31 @@ export class ChallengePageComponent {
       console.log(this.form.value);
     } else {
       console.error('Form is invalid');
+      console.log(this.form.value);
     }
   }
 
-  getNameErrorMessage() {
-    const control = this.form.get('name');
+  getSSNErrorMessage() {
+    const control = this.form.get('ssn');
     if (control?.hasError('required')) {
-      return 'You must enter a name';
+      return 'Must be exactly 4 digits';
     }
     if (control?.hasError('minlength')) {
-      return 'Name must be at least 2 characters long';
+      return 'Must be exactly 4 digits';
     }
     return '';
   }
 
-  getEmailErrorMessage() {
-    const control = this.form.get('email');
+  getPhoneErrorMessage() {
+    const control = this.form.get('phone');
     if (control?.hasError('required')) {
-      return 'You must enter an email';
+      return 'You must enter a phone number';
     }
+    /*
     if (control?.hasError('email')) {
-      return 'Not a valid email';
+      return 'Not a valid phone number';
     }
+      */
     return '';
   }
 }

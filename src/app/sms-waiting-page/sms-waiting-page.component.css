@@ -1,0 +1,63 @@
+@use '@angular/material' as mat;
+
+@font-face {
+    font-family: 'Gellix';
+    font-weight: 500;
+    src: url("/fonts/Gellix-Regular.woff2") format('woff2');
+  }
+  
+  @font-face {
+    font-family: 'Gellix';
+    font-weight: 600;
+    src: url("/fonts/Gellix-Medium.woff2") format('woff2');
+  }
+  
+  @font-face {
+    font-family: 'Gellix';
+    font-weight: 900;
+    src: url("/fonts/Gellix-Bold.woff2") format('woff2');
+  }
+  
+  @font-face {
+    font-family: 'Gellix';
+    font-weight: 700;
+    src: url("/fonts/Gellix-SemiBold.woff2") format('woff2');
+  }
+
+.container {
+    display: grid;
+    grid-column: span;
+    grid-template-columns: 40% auto 40%;
+    /* grid-template-rows: 100px, auto, 100px; */
+}
+
+h2 {
+    font-family: Gellix, sans-serif;
+    grid-column: 2;
+    padding-top: 50px;
+}
+
+h5 {
+    font-family: Gellix, sans-serif;
+    grid-column: 2;
+    font-weight: 300;
+}
+
+h6 {
+    font-family: Gellix, sans-serif;
+    grid-column: 2;
+    font-weight: 300;
+    align-self: center;
+}
+
+img {
+    grid-column: 2;
+    width: 25%
+}
+
+button {
+    font-family: Gellix, sans-serif;
+    grid-column: 2;
+    text-align: center;
+    width: 100%;
+}

@@ -1,20 +1,32 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" placeholder="Ex. John Doe">
-      <mat-error *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
-        {{ getNameErrorMessage() }}
-      </mat-error>
-    </mat-form-field>
-  
-    <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" placeholder="Ex. john.doe@example.com">
-      <mat-error *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
-        {{ getEmailErrorMessage() }}
-      </mat-error>
-    </mat-form-field>
-  
-    <button mat-raised-button color="primary" type="submit">Submit</button>
-  </form>
-  
+<div class="container">
+    <div></div>
+    <h3 layout-align="center">Let's begin by finding your info</h3>
+    <h5>We can prefill some of this request like your name, address, and contact info for you.</h5>
+    <h4>Social Security Number</h4>
+    <div></div>
+    <div></div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" color="primary">
+        <input matInput #message maxlength="4" formControlName="ssn" placeholder="*** **">
+        <mat-error *ngIf="form.get('ssn')?.invalid && form.get('ssn')?.touched">
+            {{ getSSNErrorMessage() }}
+        </mat-error>
+        </mat-form-field>
+        <h6>By providing your last 4 of your SSN, we will attempt to find your information to expedite your request.</h6>
+    
+        <h4>Phone Number</h4>
+        <mat-form-field appearance="outline">
+        <input matInput formControlName="phone" placeholder="+1">
+        <mat-error *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched">
+            {{ getPhoneErrorMessage() }}
+        </mat-error>
+        </mat-form-field>
+    
+        <h6 class="second">By clicking 'Continue' you accept our
+            <a href="https://www.prove.com/legal/overview#End-User-Terms-Conditions" color="blues" target="_blank">TERMS AND CONDITIONS</a>
+        </h6>
+        <div style="text-align: center;">
+            <button mat-flat-button color="primary" type="submit" (click)="onSubmit()" routerLink="/sms-waiting">CONTINUE</button>
+        </div>
+    </form>
+</div>
