@@ -5,6 +5,7 @@ import { AppComponent } from "./app.component";
 import { appRoutingModule } from "./app.routes";
 import { ChallengePageComponent } from "./challenge-page/challenge-page.component";
 import { SMSWaitingComponent } from "./sms-waiting-page/sms-waiting-page.component";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
     declarations: [
@@ -14,6 +15,7 @@ import { SMSWaitingComponent } from "./sms-waiting-page/sms-waiting-page.compone
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         appRoutingModule
     ],
     providers: [],
