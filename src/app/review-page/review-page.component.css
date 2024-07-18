@@ -43,6 +43,11 @@ h5 {
     font-weight: 300;
 }
 
+mat-hint {
+    font-family: Gellix, sans-serif;
+    font-weight: 300;
+}
+
 mat-form-field {
     width: 100%;
     font-family: Gellix, sans-serif;
@@ -64,6 +69,22 @@ input {
     height: 50px;
 }
 
+mat-date-picker {
+  font-family: Gellix, sans-serif;
+  appearance: fill;
+  align-items: center;
+  grid-column: 2;
+  /*color: #C4C4C4;*/
+  color: black;
+  width: 50%;
+  height: 50px;
+}
+
+mat-label {
+  font-family: Gellix, sans-serif;
+  appearance: fill;
+}
+
 button {
     font-family: Gellix, sans-serif;
     grid-column: 2;
@@ -73,4 +94,14 @@ button {
 
 form {
     grid-column: 2;
+}
+
+.half {
+  width: 50%;
+  font-family: Gellix, sans-serif;
+  height: 75px;
+  appearance: fill;
+  align-items: center;
+  grid-column: 2;
+  color: black;
 }
