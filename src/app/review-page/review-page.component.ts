@@ -41,15 +41,15 @@ export class ReviewPageComponent {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
-      firstname: ['', [Validators.required, Validators.minLength(4)]],
-      lastname: ['', [Validators.required, Validators.email]],
-      address: ['', [Validators.required, Validators.email]],
-      extendedaddress: ['', [Validators.required, Validators.email]],
-      city: ['', [Validators.required, Validators.email]],
-      state: ['', [Validators.required, Validators.email]],
-      zipcode: ['', [Validators.required, Validators.email]],
-      dob: ['', [Validators.required, Validators.email]],
-      ssn: ['', [Validators.required, Validators.email]],
+      firstname: ['', [Validators.required]],
+      lastname: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+      extendedaddress: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      state: ['', [Validators.required]],
+      zipcode: ['', [Validators.required, Validators.minLength(5)]],
+      dob: ['', [Validators.required]],
+      ssn: ['', [Validators.required, Validators.minLength(4)]],
     });
   }
 

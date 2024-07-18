@@ -1,11 +1,28 @@
-<div class = "container">
-    <h2>Verify your mobile</h2>
-    <h5>Please click on the link we just sent to the phone number ending in NUMBER</h5>
-    <img src="phoneImage.jpg" alt="Phone image">
-    <h6>Didn't receive the text?</h6>
+<div class="container">
+  <h2>Verify your mobile</h2>
+  <h5>
+    Please click on the link we just sent to the phone number ending in NUMBER
+  </h5>
+  <img src="phoneImage.jpg" alt="Phone image" class="center" />
+  <h6>Didn't receive the text?</h6>
 
-        <button mat-button color="primary" type="submit" (click)="onSubmit()" routerLink="/challenge-page">Error sending link; please click to return to Challenge Page</button>
-        <div></div>
-        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" routerLink="/review-page">Manually click link</button>
-
+  <button
+    mat-button
+    color="primary"
+    type="submit"
+    (click)="onSubmit()"
+    routerLink="/challenge-page"
+  >
+    Error sending link; please click to return to Challenge Page
+  </button>
+  <div></div>
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    (click)="onSubmit()"
+    routerLink="/review-page"
+  >
+    Manually click link
+  </button>
 </div>

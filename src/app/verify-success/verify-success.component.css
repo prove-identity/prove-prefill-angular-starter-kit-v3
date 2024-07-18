@@ -1,5 +1,12 @@
 @use "@angular/material" as mat;
 
+.container {
+  display: grid;
+  grid-column: span;
+  grid-template-columns: 40% auto 40%;
+  /* grid-template-rows: 100px, auto, 100px; */
+}
+
 @font-face {
   font-family: "Gellix";
   font-weight: 500;
@@ -24,42 +31,53 @@
   src: url("/fonts/Gellix-SemiBold.woff2") format("woff2");
 }
 
-.container {
-  display: grid;
-  grid-column: span;
-  grid-template-columns: 40% auto 40%;
-  /* grid-template-rows: 100px, auto, 100px; */
+h4 {
+  font-family: Gellix, sans-serif;
+  grid-column: 2;
+  font-weight: normal;
+  text-align: center;
 }
 
 h2 {
   font-family: Gellix, sans-serif;
   grid-column: 2;
   padding-top: 50px;
+  text-align: center;
 }
 
-h5 {
+mat-label {
+  height: 50px;
+  grid-column: 2;
+}
+
+h1 {
   font-family: Gellix, sans-serif;
   grid-column: 2;
-  font-weight: 300;
+}
+
+h3 {
+  font-family: Gellix, sans-serif;
+  grid-column: 2;
+  padding-top: 50px;
 }
 
 h6 {
   font-family: Gellix, sans-serif;
+  font-weight: 100;
   grid-column: 2;
-  font-weight: 300;
-  text-align: center;
+}
+
+h5 {
+  font-family: Gellix, sans-serif;
+  font-weight: 600;
+  font-style: bold;
+  grid-column: 2;
 }
 
 img {
   grid-column: 2;
-  width: 25%;
-}
-
-button {
-  font-family: Gellix, sans-serif;
-  grid-column: 2;
+  align-self: center;
   text-align: center;
-  width: 100%;
 }
 
 .center {
