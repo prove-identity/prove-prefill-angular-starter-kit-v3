@@ -7,26 +7,29 @@
     <div></div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" color="primary">
-        <input matInput #message maxlength="4" formControlName="ssn" placeholder="*** **">
-        <mat-error *ngIf="form.get('ssn')?.invalid && form.get('ssn')?.touched">
-            {{ getSSNErrorMessage() }}
-        </mat-error>
+            <input matInput #message maxlength="4" formControlName="ssn" placeholder="*** **">
+            <mat-error *ngIf="form.get('ssn')?.invalid && form.get('ssn')?.touched">
+                {{ getSSNErrorMessage() }}
+            </mat-error>
         </mat-form-field>
-        <h6>By providing your last 4 of your SSN, we will attempt to find your information to expedite your request.</h6>
-    
+        <h6>By providing your last 4 of your SSN, we will attempt to find your information to expedite your request.
+        </h6>
+
         <h4>Phone Number</h4>
         <mat-form-field appearance="outline">
-        <input matInput formControlName="phone" placeholder="+1">
-        <mat-error *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched">
-            {{ getPhoneErrorMessage() }}
-        </mat-error>
+            <input matInput formControlName="phone" placeholder="+1">
+            <mat-error *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched">
+                {{ getPhoneErrorMessage() }}
+            </mat-error>
         </mat-form-field>
-    
+
         <h6 class="second">By clicking 'Continue' you accept our
-            <a href="https://www.prove.com/legal/overview#End-User-Terms-Conditions" color="blues" target="_blank">TERMS AND CONDITIONS</a>
+            <a href="https://www.prove.com/legal/overview#End-User-Terms-Conditions" color="blues" target="_blank">TERMS
+                AND CONDITIONS</a>
         </h6>
         <div style="text-align: center;">
-            <button mat-flat-button color="primary" type="submit" (click)="onSubmit()" routerLink="/sms-waiting">CONTINUE</button>
+            <button mat-flat-button color="primary" type="submit" (click)="onSubmit()" routerLink="/sms-waiting"
+                [disabled]="!form.valid">CONTINUE</button>
         </div>
     </form>
 </div>

@@ -45,7 +45,7 @@
             <input matInput [matDatepicker]="picker" placeholder="mm/dd/yyyy">
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
+        </mat-form-field>
 
         <mat-form-field appearance="outline" color="primary">
             <mat-label>Social Security Number</mat-label>
@@ -55,9 +55,9 @@
                 {{ getSSNErrorMessage() }}
             </mat-error>
         </mat-form-field>
-    
-        <button mat-flat-button color="primary" routerLink="/verify-success">CONFIRM</button>
+
+        <button mat-flat-button color="primary" routerLink="/verify-success" [disabled]="!form.valid">CONFIRM</button>
     </form>
-    
+
 
 </div>

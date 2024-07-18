@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,8 +23,8 @@ import { RouterModule } from '@angular/router';
     MatInputModule,
     MatButtonModule,
     NgIf,
-    RouterModule
-  ]
+    RouterModule,
+  ],
 })
 export class ChallengePageComponent {
   form: FormGroup;
@@ -27,7 +32,7 @@ export class ChallengePageComponent {
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       ssn: ['', [Validators.required, Validators.minLength(4)]],
-      phone: ['', [Validators.required, Validators.email]]
+      phone: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
 
