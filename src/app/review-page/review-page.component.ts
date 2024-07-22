@@ -13,7 +13,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatNativeDateModule } from '@angular/material/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -25,7 +24,6 @@ import { CommonModule } from '@angular/common';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    // NgIf,
     CommonModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -48,7 +46,7 @@ export class ReviewPageComponent {
       city: ['', [Validators.required]],
       state: ['', [Validators.required]],
       zipcode: ['', [Validators.required, Validators.minLength(5)]],
-      dob: ['', [Validators.required]],
+      dob: [''],
       ssn: ['', [Validators.required, Validators.minLength(4)]],
     });
   }

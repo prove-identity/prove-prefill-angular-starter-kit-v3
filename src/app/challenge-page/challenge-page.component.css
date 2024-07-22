@@ -1,128 +1,103 @@
-@use '@angular/material' as mat;
-
-/* Optional styling */
-mat-form-field {
-    width: 100%;
-    font-family: Gellix, sans-serif;
-    height: 75px;
-    appearance: fill;
-    align-items: center;
-    grid-column: 2;
-    color: black;
-  }
-
-input {
-    font-family: Gellix, sans-serif;
-    appearance: fill;
-    align-items: center;
-    grid-column: 2;
-    /*color: #C4C4C4;*/
-    color: black;
-    width: 100%;
-    height: 50px;
+.container {
+  display: grid;
+  grid-column: span;
+  grid-template-columns: 40% auto 40%;
 }
 
-.container {
-    display: grid;
-    grid-column: span;
-    grid-template-columns: 40% auto 40%;
-    /* grid-template-rows: 100px, auto, 100px; */
+mat-form-field {
+  width: 100%;
+  font-family: Gellix, sans-serif;
+  height: 75px;
+  appearance: fill;
+  align-items: center;
+  grid-column: 2;
+  color: black;
+}
+
+input {
+  font-family: Gellix, sans-serif;
+  appearance: fill;
+  align-items: center;
+  grid-column: 2;
+  /*color: #C4C4C4;*/
+  color: black;
+  width: 100%;
+  height: 50px;
 }
 
 button {
-    font-family: Gellix, sans-serif;
-    grid-column: 2;
-    text-align: center;
-    width: 100%;
+  font-family: Gellix, sans-serif;
+  grid-column: 2;
+  text-align: center;
+  width: 100%;
 }
 
 a {
-    font-family: Gellix, sans-serif;
-    grid-column: 2;
-    text-align: left;
-    color: blue;
-    font-size: x-small;
-}
-
-h4 {
-    font-family: Gellix, sans-serif;
-    grid-column: 2;
-}
-
-h2 {
-    font-family: Gellix, sans-serif;
-    grid-column: 2;
-    padding-top: 50px;
-}
-
-mat-label {
-    height: 50px;
-    grid-column: 2;
-}
-
-h1 {
-    font-family: Gellix, sans-serif;
-    grid-column: 2;
-}
-
-h3 {
-    font-family: Gellix, sans-serif;
-    grid-column: 2;
-    padding-top: 50px;
-}
-
-h6 {
-    font-family: Gellix, sans-serif;
-    font-weight: 100;
-    grid-column: 2;
-}
-
-h5 {
-    font-family: Gellix, sans-serif;
-    font-weight: 600;
-    font-style: bold;
-    grid-column: 2;
+  font-family: Gellix, sans-serif;
+  grid-column: 2;
+  text-align: left;
+  color: blue;
+  font-size: x-small;
 }
 
 .second {
-    padding-top: 150px;
-
+  padding-top: 150px;
 }
 
 mat-error {
-    color: red;
-    font-size: x-small;
+  color: red;
+  font-size: x-small;
 }
 
+mat-label {
+  height: 50px;
+  grid-column: 2;
+}
+
+h3 {
+  font-family: Gellix, sans-serif;
+  grid-column: 2;
+  padding-top: 50px;
+}
+
+h4 {
+  font-family: Gellix, sans-serif;
+  grid-column: 2;
+}
+
+h5 {
+  font-family: Gellix, sans-serif;
+  font-weight: 600;
+  font-style: bold;
+  grid-column: 2;
+}
+
+h6 {
+  font-family: Gellix, sans-serif;
+  font-weight: 100;
+  grid-column: 2;
+}
 
 @font-face {
-    font-family: 'Gellix';
-    font-weight: 500;
-    src: url("/fonts/Gellix-Regular.woff2") format('woff2');
-  }
-  
-  @font-face {
-    font-family: 'Gellix';
-    font-weight: 600;
-    src: url("/fonts/Gellix-Medium.woff2") format('woff2');
-  }
-  
-  @font-face {
-    font-family: 'Gellix';
-    font-weight: 900;
-    src: url("/fonts/Gellix-Bold.woff2") format('woff2');
-  }
-  
-  @font-face {
-    font-family: 'Gellix';
-    font-weight: 700;
-    src: url("/fonts/Gellix-SemiBold.woff2") format('woff2');
-  }
-
-.mat-primary {
-    color: #C4C4C4;
+  font-family: "Gellix";
+  font-weight: 500;
+  src: url("/fonts/Gellix-Regular.woff2") format("woff2");
 }
 
-.mat-blues {
-    color: #82A8DF;
+@font-face {
+  font-family: "Gellix";
+  font-weight: 600;
+  src: url("/fonts/Gellix-Medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Gellix";
+  font-weight: 900;
+  src: url("/fonts/Gellix-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Gellix";
+  font-weight: 700;
+  src: url("/fonts/Gellix-SemiBold.woff2") format("woff2");
 }

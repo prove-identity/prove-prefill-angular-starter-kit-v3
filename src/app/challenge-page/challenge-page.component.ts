@@ -9,7 +9,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
-import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -28,6 +27,8 @@ import { RouterModule } from '@angular/router';
 })
 export class ChallengePageComponent {
   form: FormGroup;
+  //ssndata;
+  //phonenumber;
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -36,9 +37,15 @@ export class ChallengePageComponent {
     });
   }
 
+  ngOnInit() {
+    // this.ssndata = '';
+    //this.phonenumber = '';
+  }
+
   onSubmit() {
     if (this.form.valid) {
       console.log(this.form.value);
+      //this.ssndata = this.form.value;
     } else {
       console.error('Form is invalid');
       console.log(this.form.value);
