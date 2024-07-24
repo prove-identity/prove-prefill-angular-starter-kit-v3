@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   Validators,
   ReactiveFormsModule,
+  FormsModule,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Data, RouterModule } from '@angular/router';
+import { FormStateService } from '../services/form-state.service';
 
 @Component({
   selector: 'app-challenge-page',
@@ -23,37 +25,42 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     NgIf,
     RouterModule,
+    FormsModule,
   ],
 })
-export class ChallengePageComponent {
-  form: FormGroup;
-  //ssndata;
-  //phonenumber;
+export class ChallengePageComponent implements OnInit {
+  formData: any = {};
 
-  constructor(private fb: FormBuilder) {
+  constructor(private formStateService: FormStateService) {}
+
+  ngOnInit() {
+    this.formStateService.currentState.subscribe((state) => {
+      this.formData = state;
+    });
+  }
+
+  /*
+  constructor(public form: DataForm) {
     this.form = this.fb.group({
       ssn: ['', [Validators.required, Validators.minLength(4)]],
       phone: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
-
-  ngOnInit() {
-    // this.ssndata = '';
-    //this.phonenumber = '';
-  }
+  */
 
   onSubmit() {
-    if (this.form.valid) {
-      console.log(this.form.value);
+    if (this.formData.valid) {
+      console.log(this.formData.value);
       //this.ssndata = this.form.value;
     } else {
       console.error('Form is invalid');
-      console.log(this.form.value);
+      console.log(this.formData.value);
     }
+    this.formStateService.updateState(this.formData);
   }
 
   getSSNErrorMessage() {
-    const control = this.form.get('ssn');
+    const control = this.formData.get('ssn');
     if (control?.hasError('required')) {
       return 'Must be exactly 4 digits';
     }
@@ -64,15 +71,10 @@ export class ChallengePageComponent {
   }
 
   getPhoneErrorMessage() {
-    const control = this.form.get('phone');
+    const control = this.formData.get('phone');
     if (control?.hasError('required')) {
       return 'You must enter a phone number';
     }
-    /*
-    if (control?.hasError('email')) {
-      return 'Not a valid phone number';
-    }
-      */
     return '';
   }
 }

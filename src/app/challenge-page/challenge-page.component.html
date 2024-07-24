@@ -5,10 +5,11 @@
     <div></div>
     <!--   divs necessary for grid alignment   -->
     <div></div>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" color="primary">
-            <input matInput #message maxlength="4" formControlName="ssn" placeholder="*** **">
-            <mat-error *ngIf="form.get('ssn')?.invalid && form.get('ssn')?.touched">
+            <input id="ssn" [(ngModel)]="formData.ssn" name="ssn" matInput #message maxlength="4" placeholder="*** **"
+                ngModel>
+            <mat-error *ngIf="this.formData.getValue('ssn')?.invalid && this.formData.getValue('ssn')?.touched">
                 {{ getSSNErrorMessage() }}
             </mat-error>
         </mat-form-field>
@@ -17,8 +18,9 @@
 
         <h4>Phone Number</h4>
         <mat-form-field appearance="outline">
-            <input matInput formControlName="phone" placeholder="+1">
-            <mat-error *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched">
+            <input id="phoneNumber" [(ngModel)]="formData.phoneNumber" name="phoneNumber" matInput placeholder="+1"
+                ngModel>
+            <mat-error *ngIf="this.formData.getValue('phone')?.invalid && this.formData.getValue('phone')?.touched">
                 {{ getPhoneErrorMessage() }}
             </mat-error>
         </mat-form-field>
@@ -29,7 +31,8 @@
         </h6>
         <div style="text-align: center;">
             <button mat-flat-button color="primary" type="submit" (click)="onSubmit()" routerLink="/sms-waiting"
-                [disabled]="!form.valid">CONTINUE</button>
+                [disabled]="!formData.valid">CONTINUE</button>
         </div>
     </form>
+    <h6>{{formData.value.ssn}}</h6>
 </div>
