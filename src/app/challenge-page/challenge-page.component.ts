@@ -29,7 +29,6 @@ import { FormStateService } from '../services/form-state.service';
   ],
 })
 export class ChallengePageComponent implements OnInit {
-  formData: any = {};
   form: FormGroup;
 
   constructor(
@@ -37,43 +36,35 @@ export class ChallengePageComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.form = this.fb.group({
-      ssn: ['', [Validators.required, Validators.minLength(4)]],
+      ssn: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
       phoneNumber: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
 
   ngOnInit() {
     this.formStateService.currentState.subscribe((state) => {
-      this.formData = state;
+      this.form.patchValue(state, { emitEvent: false });
     });
-  }
 
-  /*
-  constructor(public form: DataForm) {
-    this.form = this.fb.group({
-      ssn: ['', [Validators.required, Validators.minLength(4)]],
-      phone: ['', [Validators.required, Validators.minLength(10)]],
+    this.form.valueChanges.subscribe((newState) => {
+      this.formStateService.updateState(newState);
     });
   }
-  */
 
   onSubmit() {
     if (this.form.valid) {
-      console.log(this.form.value);
-      //this.ssndata = this.form.value;
+      console.log('Form Submitted:', this.form.value);
     } else {
       console.error('Form is invalid');
-      console.log(this.form.value);
     }
-    this.formStateService.updateState(this.formData);
   }
 
   getSSNErrorMessage() {
     const control = this.form.get('ssn');
     if (control?.hasError('required')) {
-      return 'Must be exactly 4 digits';
+      return 'SSN is required';
     }
-    if (control?.hasError('minlength')) {
+    if (control?.hasError('minlength') || control?.hasError('maxlength')) {
       return 'Must be exactly 4 digits';
     }
     return '';
@@ -82,7 +73,7 @@ export class ChallengePageComponent implements OnInit {
   getPhoneErrorMessage() {
     const control = this.form.get('phoneNumber');
     if (control?.hasError('required')) {
-      return 'You must enter a phone number';
+      return 'Phone number is required';
     }
     if (control?.hasError('minlength')) {
       return 'Not a valid phone number';

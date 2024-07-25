@@ -7,18 +7,16 @@
     <div></div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" color="primary">
-            <input id="ssn" name="ssn" formControlName="ssn" matInput #message maxlength="4" placeholder="*** **"
-                ngModel>
+            <input id="ssn" name="ssn" formControlName="ssn" matInput placeholder="*** **" maxlength="4" />
             <mat-error *ngIf="form.get('ssn')?.invalid && form.get('ssn')?.touched">
                 {{ getSSNErrorMessage() }}
             </mat-error>
         </mat-form-field>
-        <h6>By providing your last 4 of your SSN, we will attempt to find your information to expedite your request.
-        </h6>
+        <h6>By providing the last 4 digits of your SSN, we can expedite your request.</h6>
 
         <h4>Phone Number</h4>
         <mat-form-field appearance="outline">
-            <input id="phoneNumber" formControlName="phoneNumber" name="phoneNumber" matInput placeholder="+1" ngModel>
+            <input id="phoneNumber" formControlName="phoneNumber" matInput placeholder="+1" />
             <mat-error *ngIf="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched">
                 {{ getPhoneErrorMessage() }}
             </mat-error>
@@ -29,9 +27,7 @@
                 AND CONDITIONS</a>
         </h6>
         <div style="text-align: center;">
-            <button mat-flat-button color="primary" type="submit" (click)="onSubmit()" routerLink="/sms-waiting"
-                [disabled]="!form.valid">CONTINUE</button>
+            <button mat-flat-button color="primary" type="submit" [disabled]="!form.valid">CONTINUE</button>
         </div>
     </form>
-    <h6>{{form.value.ssn}}</h6>
 </div>
