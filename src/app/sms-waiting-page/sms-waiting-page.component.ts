@@ -20,7 +20,6 @@ import { FormStateService } from '../services/form-state.service';
     NgIf,
     RouterModule,
   ],
-  providers: [FormStateService],
 })
 export class SMSWaitingComponent {
   formData: any = {};
@@ -29,11 +28,11 @@ export class SMSWaitingComponent {
     console.log('next page');
   }
 
-  constructor(private formStateService: FormStateService) {}
+  constructor(private formStateService: FormStateService) { }
 
   ngOnInit() {
-    this.formStateService.currentState.subscribe((state) => {
-      this.formData = state;
-    });
+    //Directly get the current state
+    const currentState = this.formStateService.getState();
+    console.log('Current state:', currentState);
   }
 }

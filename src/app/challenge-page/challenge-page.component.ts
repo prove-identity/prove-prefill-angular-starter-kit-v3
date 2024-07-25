@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
 import { Data, RouterModule } from '@angular/router';
 import { FormStateService } from '../services/form-state.service';
+import { Router } from '@angular/router'; // Import Router
 
 @Component({
   selector: 'app-challenge-page',
@@ -33,7 +34,8 @@ export class ChallengePageComponent implements OnInit {
 
   constructor(
     private formStateService: FormStateService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     this.form = this.fb.group({
       ssn: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
@@ -54,6 +56,8 @@ export class ChallengePageComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       console.log('Form Submitted:', this.form.value);
+      // Test Navigate to another page, e.g., '/sms-waiting'
+      this.router.navigate(['/sms-waiting']);
     } else {
       console.error('Form is invalid');
     }
