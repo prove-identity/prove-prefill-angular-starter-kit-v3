@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormStateService } from '../services/form-state.service';
 
 @Component({
   selector: 'app-challenge-page',
@@ -19,9 +20,20 @@ import { RouterModule } from '@angular/router';
     NgIf,
     RouterModule,
   ],
+  providers: [FormStateService],
 })
 export class SMSWaitingComponent {
+  formData: any = {};
+
   onSubmit() {
     console.log('next page');
+  }
+
+  constructor(private formStateService: FormStateService) {}
+
+  ngOnInit() {
+    this.formStateService.currentState.subscribe((state) => {
+      this.formData = state;
+    });
   }
 }

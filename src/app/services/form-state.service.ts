@@ -7,7 +7,6 @@ import { BehaviorSubject } from 'rxjs';
 export class FormStateService {
   private formState = new BehaviorSubject<any>({
     ssn: '',
-    last4: '',
     phoneNumber: '',
     // Add other fields as needed
   });

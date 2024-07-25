@@ -30,8 +30,17 @@ import { FormStateService } from '../services/form-state.service';
 })
 export class ChallengePageComponent implements OnInit {
   formData: any = {};
+  form: FormGroup;
 
-  constructor(private formStateService: FormStateService) {}
+  constructor(
+    private formStateService: FormStateService,
+    private fb: FormBuilder
+  ) {
+    this.form = this.fb.group({
+      ssn: ['', [Validators.required, Validators.minLength(4)]],
+      phoneNumber: ['', [Validators.required, Validators.minLength(10)]],
+    });
+  }
 
   ngOnInit() {
     this.formStateService.currentState.subscribe((state) => {
@@ -49,18 +58,18 @@ export class ChallengePageComponent implements OnInit {
   */
 
   onSubmit() {
-    if (this.formData.valid) {
-      console.log(this.formData.value);
+    if (this.form.valid) {
+      console.log(this.form.value);
       //this.ssndata = this.form.value;
     } else {
       console.error('Form is invalid');
-      console.log(this.formData.value);
+      console.log(this.form.value);
     }
     this.formStateService.updateState(this.formData);
   }
 
   getSSNErrorMessage() {
-    const control = this.formData.get('ssn');
+    const control = this.form.get('ssn');
     if (control?.hasError('required')) {
       return 'Must be exactly 4 digits';
     }
@@ -71,9 +80,12 @@ export class ChallengePageComponent implements OnInit {
   }
 
   getPhoneErrorMessage() {
-    const control = this.formData.get('phone');
+    const control = this.form.get('phoneNumber');
     if (control?.hasError('required')) {
       return 'You must enter a phone number';
+    }
+    if (control?.hasError('minlength')) {
+      return 'Not a valid phone number';
     }
     return '';
   }
