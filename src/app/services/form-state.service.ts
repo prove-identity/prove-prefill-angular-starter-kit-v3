@@ -5,18 +5,17 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class FormStateService {
-  private formState = new BehaviorSubject<any>({
-    ssn: '',
-    phoneNumber: '',
-    // Add other fields as needed
-  });
+  private formState = new BehaviorSubject<{ ssn: string; phoneNumber: string }>(
+    {
+      ssn: '',
+      phoneNumber: '',
+    }
+  );
+
   currentState = this.formState.asObservable();
 
-  constructor() {}
-
-  updateState(newState: any) {
-    const currentState = this.formState.getValue();
-    this.formState.next({ ...currentState, ...newState });
+  updateState(newState: { ssn: string; phoneNumber: string }) {
+    this.formState.next(newState);
   }
 
   getState() {

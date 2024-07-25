@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { FormStateService } from '../services/form-state.service';
 
 @Component({
-  selector: 'app-challenge-page',
+  selector: 'app-sms-waiting-page',
   standalone: true,
   templateUrl: './sms-waiting-page.component.html',
   styleUrl: './sms-waiting-page.component.css',
@@ -32,8 +32,10 @@ export class SMSWaitingComponent {
   constructor(private formStateService: FormStateService) {}
 
   ngOnInit() {
-    this.formStateService.currentState.subscribe((state) => {
-      this.formData = state;
-    });
+    console.log(this.formStateService.getState());
+  }
+
+  getPhoneNumber() {
+    const state = this.formStateService.getState();
   }
 }
