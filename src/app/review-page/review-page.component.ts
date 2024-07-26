@@ -14,6 +14,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
+import { FormStateService } from '../services/form-state.service';
 
 @Component({
   selector: 'app-review-page',
@@ -28,7 +29,6 @@ import { CommonModule } from '@angular/common';
     MatDatepickerModule,
     MatNativeDateModule,
     FormsModule,
-    //BrowserAnimationsModule,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './review-page.component.html',
@@ -37,7 +37,10 @@ import { CommonModule } from '@angular/common';
 export class ReviewPageComponent {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private formStateService: FormStateService
+  ) {
     this.form = this.fb.group({
       firstname: ['', [Validators.required]],
       lastname: ['', [Validators.required]],
@@ -47,8 +50,16 @@ export class ReviewPageComponent {
       state: ['', [Validators.required]],
       zipcode: ['', [Validators.required, Validators.minLength(5)]],
       dob: [''],
-      ssn: ['', [Validators.required, Validators.minLength(4)]],
+      ssn: [
+        this.formStateService.getState().ssn,
+        [Validators.required, Validators.minLength(4)],
+      ],
     });
+  }
+
+  ngOnInit() {
+    const currentState = this.formStateService.getState();
+    console.log('Current state:', currentState);
   }
 
   getZipcodeErrorMessage() {
@@ -72,4 +83,6 @@ export class ReviewPageComponent {
     }
     return '';
   }
+
+  readonly state = this.formStateService.getState();
 }

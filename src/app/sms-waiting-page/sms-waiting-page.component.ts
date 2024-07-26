@@ -28,11 +28,14 @@ export class SMSWaitingComponent {
     console.log('next page');
   }
 
-  constructor(private formStateService: FormStateService) { }
+  constructor(private formStateService: FormStateService) {}
 
   ngOnInit() {
     //Directly get the current state
     const currentState = this.formStateService.getState();
     console.log('Current state:', currentState);
+    console.log(currentState.phoneNumber);
   }
+
+  readonly state = this.formStateService.getState();
 }
