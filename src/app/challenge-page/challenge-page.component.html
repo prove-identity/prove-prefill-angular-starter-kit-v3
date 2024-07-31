@@ -7,13 +7,14 @@
     <div></div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" color="primary">
-            <mat-label>Social Security Number</mat-label>
-            <input id="ssn" name="ssn" formControlName="ssn" matInput placeholder="*** **" maxlength="4" />
+            <mat-label>Last 4 digits of SSN</mat-label>
+            <input #ssnInput id="ssn" name="ssn" formControlName="ssn" matInput placeholder="xxx-xx-" maxlength="11"
+                (input)="onSSNInput($event)" />
             <mat-error *ngIf="form.get('ssn')?.invalid && form.get('ssn')?.touched">
                 {{ getSSNErrorMessage() }}
             </mat-error>
         </mat-form-field>
-        <p>By providing your last 4 of your SSN, we will attempt to find your information to expedite your request.</p>
+        <h6>By providing the last 4 digits of your SSN, we can expedite your request.</h6>
 
         <mat-form-field appearance="outline">
             <mat-label>Phone Number</mat-label>
