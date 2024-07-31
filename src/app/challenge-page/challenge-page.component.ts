@@ -13,6 +13,7 @@ import { NgIf } from '@angular/common';
 import { Data, RouterModule } from '@angular/router';
 import { FormStateService } from '../services/form-state.service';
 import { Router } from '@angular/router'; // Import Router
+import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
 
 @Component({
   selector: 'app-challenge-page',
@@ -27,6 +28,7 @@ import { Router } from '@angular/router'; // Import Router
     NgIf,
     RouterModule,
     FormsModule,
+    NgxMatIntlTelInputComponent,
   ],
 })
 export class ChallengePageComponent implements OnInit {
@@ -38,7 +40,10 @@ export class ChallengePageComponent implements OnInit {
     private router: Router
   ) {
     this.form = this.fb.group({
-      ssn: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
+      ssn: [
+        '',
+        [Validators.required, Validators.minLength(4), Validators.maxLength(4)],
+      ],
       phoneNumber: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
