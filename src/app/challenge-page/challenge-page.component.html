@@ -6,20 +6,18 @@
     <!--   divs necessary for grid alignment   -->
     <div></div>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline" color="primary">
-            <mat-label>Last 4 digits of SSN</mat-label>
-            <input #ssnInput id="ssn" name="ssn" formControlName="ssn" matInput placeholder="xxx-xx-" maxlength="11"
-                (input)="onSSNInput($event)" />
+        <mat-form-field appearance="outline" color="primary" floatLabel="always">
+            <mat-label>Social Security Number</mat-label>
+            <input id="ssn" name="ssn" formControlName="ssn" matInput placeholder="*** **" maxlength="4" />
             <mat-error *ngIf="form.get('ssn')?.invalid && form.get('ssn')?.touched">
                 {{ getSSNErrorMessage() }}
             </mat-error>
         </mat-form-field>
-        <h6>By providing the last 4 digits of your SSN, we can expedite your request.</h6>
+        <p>By providing your last 4 of your SSN, we will attempt to find your information to expedite your request.</p>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" floatLabel="always">
             <mat-label>Phone Number</mat-label>
-            <ngx-mat-intl-tel-input [onlyCountries]="['us']" [enableSearch]="false" id="phoneNumber"
-                formControlName="phoneNumber" matInput placeholder="+1" />
+            <input id="phoneNumber" formControlName="phoneNumber" matInput placeholder="+1" />
             <mat-error *ngIf="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched">
                 {{ getPhoneErrorMessage() }}
             </mat-error>

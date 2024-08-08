@@ -34,7 +34,6 @@ input {
 button {
   font-family: Gellix, sans-serif;
   grid-column: 2;
-  /* text-align: center; */
   width: 93%;
   height: 50px;
 }

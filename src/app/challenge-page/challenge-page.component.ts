@@ -1,5 +1,4 @@
-import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -11,9 +10,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Data, RouterModule } from '@angular/router';
 import { FormStateService } from '../services/form-state.service';
 import { Router } from '@angular/router'; // Import Router
+import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
+import { ProveApiService } from '../services/prove-api.service';
 
 @Component({
   selector: 'app-challenge-page',
@@ -28,20 +29,23 @@ import { Router } from '@angular/router'; // Import Router
     NgIf,
     RouterModule,
     FormsModule,
-    NgxMatIntlTelInputComponent
+    NgxMatIntlTelInputComponent,
   ],
 })
 export class ChallengePageComponent implements OnInit {
   form: FormGroup;
-  @ViewChild('ssnInput') ssnInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private formStateService: FormStateService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private api: ProveApiService
   ) {
     this.form = this.fb.group({
-      ssn: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
+      ssn: [
+        '',
+        [Validators.required, Validators.minLength(4), Validators.maxLength(4)],
+      ],
       phoneNumber: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
@@ -55,8 +59,8 @@ export class ChallengePageComponent implements OnInit {
       this.formStateService.updateState(newState);
     });
 
-    // Initial display of masked SSN
-    this.updateSSNDisplay();
+    const mockData = this.api.mockResponse();
+    console.log(mockData);
   }
 
   onSubmit() {
@@ -89,25 +93,5 @@ export class ChallengePageComponent implements OnInit {
       return 'Not a valid phone number';
     }
     return '';
-  }
-
-  updateSSNDisplay() {
-    if (this.ssnInput && this.ssnInput.nativeElement) {
-      const value = this.form.get('ssn')?.value || '';
-      this.ssnInput.nativeElement.value = this.getMaskedSSN(value);
-    }
-  }
-
-  getMaskedSSN(value: string): string {
-    // Return the masked value, ensuring it always shows ***-**- as prefix
-    return `***-**-${value}`;
-  }
-
-  onSSNInput(event: any) {
-    const input = event.target as HTMLInputElement;
-    const value = input.value.replace(/\D/g, ''); // Remove non-digit characters
-    const last4 = value.slice(-4); // Extract the last 4 digits
-    this.form.get('ssn')?.setValue(last4, { emitEvent: false }); // Update form control without emitting event
-    input.value = this.getMaskedSSN(last4); // Update displayed value
   }
 }
