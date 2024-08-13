@@ -3,6 +3,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "java",
+      "name": "AngularKitBackendApplication",
+      "request": "launch",
+      "mainClass": "angular.kit.backend.AngularKitBackendApplication",
+      "projectName": ""
+    },
+    {
       "name": "ng serve",
       "type": "chrome",
       "request": "launch",
