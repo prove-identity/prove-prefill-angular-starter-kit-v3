@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface UserRepo extends JpaRepository<User, Long> {
   Optional<User> findUserById(Long id);
+  Optional<User> findUserByLastFour(Integer lastFour);
+  Optional<User> findUserByPhoneNumber(String phoneNumber);
 }

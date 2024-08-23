@@ -38,4 +38,14 @@ public class UserService {
     return userRepo.findUserById(id).orElseThrow(()
       -> new UserNotFoundException("User with id " + id + " not found"));
   }
+
+  public User findUserByLastFour(Integer lastFour) {
+    return userRepo.findUserByLastFour(lastFour).orElseThrow(()
+      -> new UserNotFoundException("User with last four SSN digits " + lastFour + " not found"));
+  }
+
+  public User findUserByPhoneNumber(String phoneNumber) {
+    return userRepo.findUserByPhoneNumber(phoneNumber).orElseThrow(()
+      -> new UserNotFoundException("User with phone number " + phoneNumber + " not found"));
+  }
 }
