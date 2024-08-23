@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { User } from './user';
+import { ProveApiService } from './services/prove-api.service';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +11,24 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent {
-  title = 'ProvePrefillAngularStarterKit-V3';
+export class AppComponent implements OnInit {
+  public users: User[]; //initialization error
+
+  constructor(private apiService: ProveApiService){
+  }
+
+  ngOnInit() {
+    this.getUsers();
+  }
+
+  public getUsers(): void {
+    this.apiService.getUsers().subscribe(
+      (response: User[]) => {
+        this.users = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+  }
 }

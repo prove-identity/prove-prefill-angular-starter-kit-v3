@@ -7,6 +7,7 @@ import { SMSWaitingComponent } from './sms-waiting-page/sms-waiting-page.compone
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormStateService } from './services/form-state.service';
 import { FormsModule } from '@angular/forms';
+import { ProveApiService } from './services/prove-api.service';
 
 @NgModule({
   declarations: [AppComponent, ChallengePageComponent, SMSWaitingComponent],
@@ -16,7 +17,7 @@ import { FormsModule } from '@angular/forms';
     appRoutingModule,
     FormsModule,
   ],
-  providers: [FormStateService],
+  providers: [FormStateService, ProveApiService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

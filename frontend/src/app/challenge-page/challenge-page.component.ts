@@ -15,6 +15,7 @@ import { FormStateService } from '../services/form-state.service';
 import { Router } from '@angular/router'; // Import Router
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
 import { ProveApiService } from '../services/prove-api.service';
+import { User } from '../user';
 
 @Component({
   selector: 'app-challenge-page',
@@ -72,6 +73,7 @@ export class ChallengePageComponent implements OnInit {
       const mockRequest = this.api.challengeRequest();
       console.log(mockRequest);
       console.log(mockData);
+      this.api.addUser(); //should be added with lowest available id and all fields not named lastfour or phonenumber set to null
     } else {
       console.error('Form is invalid');
     }
