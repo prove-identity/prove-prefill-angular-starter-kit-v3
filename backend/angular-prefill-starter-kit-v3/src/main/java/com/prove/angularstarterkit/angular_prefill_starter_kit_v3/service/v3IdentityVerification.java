@@ -10,8 +10,11 @@ import com.prove.proveapi.models.components.V3StartResponse;
 import com.prove.proveapi.models.components.V3ValidateResponse;
 
 public interface v3IdentityVerification {
-  public V3StartResponse startRequest(v3StartRequestDTO startRequest);
-  public V3ValidateResponse validateRequest(v3ValidaRequestDTO validaRequest);
-  public V3ChallengeResponse challengeRequest(v3ChallengeRequestDTO challengeRequest);
-  public V3CompleteResponse completeRequest(v3CompleteRequestDTO completeRequest);
+  IdentityV3Response<V3StartResponse> startRequest(v3StartRequestDTO startRequest) throws Exception;
+
+  IdentityV3Response<V3ValidateResponse> validateRequest(v3ValidaRequestDTO validaRequest) throws Exception;
+
+  IdentityV3Response<V3ChallengeResponse> challengeRequest(v3ChallengeRequestDTO challengeRequest) throws Exception;
+
+  IdentityV3Response<V3CompleteResponse> completeRequest(v3CompleteRequestDTO completeRequest) throws Exception;
 }

@@ -1,6 +1,7 @@
 package com.prove.angularstarterkit.angular_prefill_starter_kit_v3.dto;
 
 import java.util.List;
+
 import lombok.Getter;
 import lombok.ToString;
 import jakarta.validation.Valid;
@@ -8,9 +9,11 @@ import lombok.AllArgsConstructor;
 import jakarta.validation.constraints.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Getter
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class v3CompleteRequestDTO {
   @NotNull(message = "Correlation ID must not be null")
   @NotEmpty(message = "Correlation ID must not be empty")
@@ -44,7 +47,6 @@ public class v3CompleteRequestDTO {
   @Getter
   @ToString
   @AllArgsConstructor
-
   public static class v3AddressDTO {
     // Getters and Setters for AddressDTO
     @Size(max = 255, message = "Address must be a string of at most 255 characters")

@@ -4,6 +4,7 @@ import com.prove.angularstarterkit.angular_prefill_starter_kit_v3.dto.v3StartReq
 import com.prove.angularstarterkit.angular_prefill_starter_kit_v3.dto.v3ValidaRequestDTO;
 import com.prove.angularstarterkit.angular_prefill_starter_kit_v3.dto.v3CompleteRequestDTO;
 import com.prove.angularstarterkit.angular_prefill_starter_kit_v3.dto.v3ChallengeRequestDTO;
+import com.prove.angularstarterkit.angular_prefill_starter_kit_v3.service.IdentityV3Response;
 import com.prove.angularstarterkit.angular_prefill_starter_kit_v3.service.v3IdentityVerification;
 
 import com.prove.proveapi.models.components.V3StartResponse;
@@ -11,7 +12,10 @@ import com.prove.proveapi.models.components.V3ValidateResponse;
 import com.prove.proveapi.models.components.V3CompleteResponse;
 import com.prove.proveapi.models.components.V3ChallengeResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,54 +31,85 @@ import java.util.Map;
 
 @RestController
 public class IdentityVerifyController {
+  private final Logger logger = LoggerFactory.getLogger(IdentityVerifyController.class);
+
   @Autowired
   private v3IdentityVerification verificationService;
 
   @PostMapping("/v3/start")
   @ExceptionHandler
-  public ResponseEntity<V3StartResponse> v3StartRequest(@Valid @RequestBody v3StartRequestDTO request,
-                                                        BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-      return handleValidationErrors(bindingResult);
+  public ResponseEntity<IdentityV3Response<V3StartResponse>> v3StartRequest(@Valid @RequestBody v3StartRequestDTO request,
+                                                                            BindingResult bindingResult) {
+    try {
+      if (bindingResult.hasErrors()) {
+        return handleValidationErrors(bindingResult);
+      }
+      IdentityV3Response<V3StartResponse> v3StartResponseIdentityV3Response =
+        this.verificationService.startRequest(request);
+      return new ResponseEntity<>(v3StartResponseIdentityV3Response, HttpStatus.OK);
+    } catch (Exception e) {
+      String exceptionMessage = e.getMessage();
+      this.logger.error("v3Start response error :{}", exceptionMessage);
+      return new ResponseEntity<>(new IdentityV3Response<>(exceptionMessage), HttpStatus.BAD_REQUEST);
     }
-    V3StartResponse v3StartResponse = this.verificationService.startRequest(request);
-    return new ResponseEntity<>(v3StartResponse, HttpStatus.OK);
   }
 
   @PostMapping("/v3/validate")
   @ExceptionHandler
-  public ResponseEntity<V3ValidateResponse> v3ValidateRequest(@Valid @RequestBody v3ValidaRequestDTO request,
-                                                              BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-      return handleValidationErrors(bindingResult);
+  public ResponseEntity<IdentityV3Response<V3ValidateResponse>> v3ValidateRequest(@Valid @RequestBody v3ValidaRequestDTO request,
+                                                                                  BindingResult bindingResult) {
+    try {
+      if (bindingResult.hasErrors()) {
+        return handleValidationErrors(bindingResult);
+      }
+      IdentityV3Response<V3ValidateResponse> v3ValidateResponseIdentityV3Response =
+        this.verificationService.validateRequest(request);
+      return new ResponseEntity<>(v3ValidateResponseIdentityV3Response, HttpStatus.OK);
+    } catch (Exception e) {
+      String exceptionMessage = e.getMessage();
+      this.logger.error("v3Validate response error :{}", exceptionMessage);
+      return new ResponseEntity<>(new IdentityV3Response<>(exceptionMessage), HttpStatus.BAD_REQUEST);
     }
-    V3ValidateResponse v3ValidateResponse = this.verificationService.validateRequest(request);
-    return new ResponseEntity<>(v3ValidateResponse, HttpStatus.OK);
   }
 
   @PostMapping("/v3/challenge")
   @ExceptionHandler
-  public ResponseEntity<V3ChallengeResponse> v3ChallengeRequest(@Valid @RequestBody v3ChallengeRequestDTO request,
-                                              BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-      return handleValidationErrors(bindingResult);
+  public ResponseEntity<IdentityV3Response<V3ChallengeResponse>> v3ChallengeRequest(@Valid @RequestBody v3ChallengeRequestDTO request,
+                                                                                    BindingResult bindingResult) {
+    try {
+      if (bindingResult.hasErrors()) {
+        return handleValidationErrors(bindingResult);
+      }
+      IdentityV3Response<V3ChallengeResponse> v3ChallengeResponseIdentityV3Response =
+        this.verificationService.challengeRequest(request);
+      return new ResponseEntity<>(v3ChallengeResponseIdentityV3Response, HttpStatus.OK);
+    } catch (Exception e) {
+      String exceptionMessage = e.getMessage();
+      this.logger.error("v3Challenge response error :{}", exceptionMessage);
+      return new ResponseEntity<>(new IdentityV3Response<>(exceptionMessage), HttpStatus.BAD_REQUEST);
     }
-    V3ChallengeResponse v3ChallengeResponse = this.verificationService.challengeRequest(request);
-    return new ResponseEntity<>(v3ChallengeResponse, HttpStatus.OK);
   }
 
   @PostMapping("/v3/complete")
   @ExceptionHandler
-  public ResponseEntity<V3CompleteResponse> v3CompleteRequest(@Valid @RequestBody v3CompleteRequestDTO request,
-                                                              BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-      return handleValidationErrors(bindingResult);
+  public ResponseEntity<IdentityV3Response<V3CompleteResponse>> v3CompleteRequest(@Valid @RequestBody v3CompleteRequestDTO request,
+                                                                                  BindingResult bindingResult) {
+    try {
+      if (bindingResult.hasErrors()) {
+        return handleValidationErrors(bindingResult);
+      }
+      IdentityV3Response<V3CompleteResponse> v3CompleteResponseIdentityV3Response =
+        this.verificationService.completeRequest(request);
+      return new ResponseEntity<>(v3CompleteResponseIdentityV3Response, HttpStatus.OK);
+    } catch (Exception e) {
+      String exceptionMessage = e.getMessage();
+      this.logger.error("v3Complete response error :{}", exceptionMessage);
+      return new ResponseEntity<>(new IdentityV3Response<>(exceptionMessage), HttpStatus.BAD_REQUEST);
     }
-    V3CompleteResponse v3CompleteResponse = this.verificationService.completeRequest(request);
-    return new ResponseEntity<>(v3CompleteResponse, HttpStatus.OK);
   }
 
   @SuppressWarnings("unchecked")
+  @ExceptionHandler(MethodArgumentNotValidException.class)
   private <T extends ResponseEntity<?>> T handleValidationErrors(BindingResult bindingResult) {
     Map<String, String> errors = new HashMap<>();
     // Collect validation errors

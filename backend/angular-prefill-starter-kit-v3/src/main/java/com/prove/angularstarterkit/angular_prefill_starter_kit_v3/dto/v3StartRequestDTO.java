@@ -5,9 +5,12 @@ import lombok.ToString;
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.URL;
 import org.hibernate.validator.constraints.Length;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Getter
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class v3StartRequestDTO {
   @NotBlank(message = "Phone number must not be empty")
   private String phoneNumber;
