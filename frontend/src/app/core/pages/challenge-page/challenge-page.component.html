@@ -1,0 +1,69 @@
+<div class="container">
+  <img src="proveLogo-light.svg" />
+  <h3 layout-align="center">Let's begin by finding your info</h3>
+  <h5>
+    We can prefill some of this request like your name, address, and contact
+    info for you.
+  </h5>
+  <div></div>
+  <!--   divs necessary for grid alignment   -->
+  <div></div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" color="primary" floatLabel="always">
+      <mat-label>Social Security Number</mat-label>
+      <input
+        id="ssn"
+        name="ssn"
+        formControlName="ssn"
+        matInput
+        placeholder="*** **"
+        maxlength="4"
+      />
+      <mat-error *ngIf="form.get('ssn')?.invalid && form.get('ssn')?.touched">
+        {{ getSSNErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+    <p>
+      By providing your last 4 of your SSN, we will attempt to find your
+      information to expedite your request.
+    </p>
+
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Phone Number</mat-label>
+      <input
+        id="phoneNumber"
+        formControlName="phoneNumber"
+        matInput
+        placeholder="+1"
+      />
+      <mat-error
+        *ngIf="
+          form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched
+        "
+      >
+        {{ getPhoneErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+
+    <p class="second">
+      By clicking 'Continue' you accept our
+      <a
+        href="https://www.prove.com/legal/overview#End-User-Terms-Conditions"
+        class="blues"
+        target="_blank"
+        >TERMS AND CONDITIONS</a
+      >
+    </p>
+    <div style="text-align: left" class="buttondiv">
+      <button
+        mat-fab
+        color="primary"
+        type="submit"
+        [disabled]="!form.valid"
+        (click)="(handleContinueButton)"
+      >
+        CONTINUE
+      </button>
+    </div>
+  </form>
+</div>
