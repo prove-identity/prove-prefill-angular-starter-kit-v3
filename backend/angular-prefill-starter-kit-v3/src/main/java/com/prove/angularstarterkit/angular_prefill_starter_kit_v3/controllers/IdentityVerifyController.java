@@ -26,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +50,9 @@ public class IdentityVerifyController {
       return new ResponseEntity<>(v3StartResponseIdentityV3Response, HttpStatus.OK);
     } catch (Exception e) {
       String exceptionMessage = e.getMessage();
+      if (exceptionMessage == null) {
+        exceptionMessage = Arrays.toString(e.getStackTrace());
+      }
       this.logger.error("v3Start response error :{}", exceptionMessage);
       return new ResponseEntity<>(new IdentityV3Response<>(exceptionMessage), HttpStatus.BAD_REQUEST);
     }
@@ -67,6 +71,9 @@ public class IdentityVerifyController {
       return new ResponseEntity<>(v3ValidateResponseIdentityV3Response, HttpStatus.OK);
     } catch (Exception e) {
       String exceptionMessage = e.getMessage();
+      if (exceptionMessage == null) {
+        exceptionMessage = Arrays.toString(e.getStackTrace());
+      }
       this.logger.error("v3Validate response error :{}", exceptionMessage);
       return new ResponseEntity<>(new IdentityV3Response<>(exceptionMessage), HttpStatus.BAD_REQUEST);
     }
@@ -85,6 +92,9 @@ public class IdentityVerifyController {
       return new ResponseEntity<>(v3ChallengeResponseIdentityV3Response, HttpStatus.OK);
     } catch (Exception e) {
       String exceptionMessage = e.getMessage();
+      if (exceptionMessage == null) {
+        exceptionMessage = Arrays.toString(e.getStackTrace());
+      }
       this.logger.error("v3Challenge response error :{}", exceptionMessage);
       return new ResponseEntity<>(new IdentityV3Response<>(exceptionMessage), HttpStatus.BAD_REQUEST);
     }
@@ -103,6 +113,9 @@ public class IdentityVerifyController {
       return new ResponseEntity<>(v3CompleteResponseIdentityV3Response, HttpStatus.OK);
     } catch (Exception e) {
       String exceptionMessage = e.getMessage();
+      if (exceptionMessage == null) {
+        exceptionMessage = Arrays.toString(e.getStackTrace());
+      }
       this.logger.error("v3Complete response error :{}", exceptionMessage);
       return new ResponseEntity<>(new IdentityV3Response<>(exceptionMessage), HttpStatus.BAD_REQUEST);
     }

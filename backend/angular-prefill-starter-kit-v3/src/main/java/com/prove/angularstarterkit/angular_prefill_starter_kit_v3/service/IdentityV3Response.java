@@ -5,11 +5,11 @@ import lombok.*;
 @Getter
 @ToString
 public class IdentityV3Response<T> {
-  private T responseData;
+  private T data;
   private String exception;
 
-  public IdentityV3Response(T responseData) {
-    this.responseData = responseData;
+  public IdentityV3Response(T data) {
+    this.data = data;
   }
 
   public IdentityV3Response(String exception) {
