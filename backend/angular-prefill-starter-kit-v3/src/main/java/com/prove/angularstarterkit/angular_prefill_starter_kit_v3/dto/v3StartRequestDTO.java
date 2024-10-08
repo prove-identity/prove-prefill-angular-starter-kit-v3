@@ -22,7 +22,7 @@ public class v3StartRequestDTO {
   @NotBlank(message = "Flow type must not be null")
   @Pattern(regexp = "desktop|mobile", message = "Flow type must be either 'desktop' or 'mobile'")
   private String flowType;
-  @URL(message = "Final target URL must be valid")
+  @NotEmpty(message = "Final target URL must be valid")
   private String finalTargetUrl;
 
 }

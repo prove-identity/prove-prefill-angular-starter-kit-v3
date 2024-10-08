@@ -31,13 +31,18 @@ public class ProveV3IdentityVerificationService implements v3IdentityVerificatio
   public IdentityV3Response<V3StartResponse> startRequest(v3StartRequestDTO start) throws Exception {
     this.logger.info("Starting v3Start request with payload :{}", start);
 
-    V3StartRequest request = V3StartRequest.builder()
-      .phoneNumber(start.getPhoneNumber())
+    V3StartRequest.Builder builder = V3StartRequest.builder();
+
+    if (!StringUtils.isNullOrEmpty(start.getIpAddress())) {
+      builder.ipAddress(start.getIpAddress());
+    }
+    if (!StringUtils.isNullOrEmpty(start.getFinalTargetUrl())) {
+      builder.finalTargetUrl(start.getFinalTargetUrl());
+    }
+
+    V3StartRequest request = builder.phoneNumber(start.getPhoneNumber())
       .ssn(start.getLast4SSN())
-      .ipAddress(start.getIpAddress())
-      .flowType(start.getFlowType())
-      .finalTargetUrl(start.getFinalTargetUrl())
-      .build();
+      .flowType(start.getFlowType()).build();
 
     V3StartRequestResponse response = this.sdk.v3().v3StartRequest()
       .request(request)
@@ -111,13 +116,16 @@ public class ProveV3IdentityVerificationService implements v3IdentityVerificatio
     List<v3CompleteRequestDTO.v3AddressDTO> individualAddresses = completeRequest.getIndividual().getAddresses();
 
     for (v3CompleteRequestDTO.v3AddressDTO add : individualAddresses) {
-      V3CompleteAddressEntryRequest addressEntryRequest = V3CompleteAddressEntryRequest.builder()
-        .address(add.getAddress())
+      V3CompleteAddressEntryRequest.Builder addressEntryRequestBuilder = V3CompleteAddressEntryRequest.builder();
+      if (StringUtils.isNullOrEmpty(add.getExtendedAddress())) {
+        addressEntryRequestBuilder.extendedAddress(add.getExtendedAddress());
+      }
+      V3CompleteAddressEntryRequest addressEntryRequest = addressEntryRequestBuilder.address(add.getAddress())
         .city(add.getCity())
-        .extendedAddress(add.getExtendedAddress())
         .postalCode(add.getPostalCode())
         .region(add.getRegion())
         .build();
+
       addresses.add(addressEntryRequest);
     }
 
@@ -125,11 +133,17 @@ public class ProveV3IdentityVerificationService implements v3IdentityVerificatio
     V3CompleteRequest.Builder builder = V3CompleteRequest.builder()
       .correlationId(completeRequest.getCorrelationId());
     V3CompleteIndividualRequest.Builder individualBuilder = V3CompleteIndividualRequest.builder()
-      .emailAddresses(emailAddresses)
       .addresses(addresses)
       .firstName(firstName)
-      .lastName(lastName)
-      .ssn(ssn);
+      .lastName(lastName);
+
+    if (emailAddresses != null && !emailAddresses.isEmpty()) {
+      individualBuilder.emailAddresses(emailAddresses);
+    }
+
+    if (!StringUtils.isNullOrEmpty(ssn)) {
+      individualBuilder.ssn(ssn);
+    }
 
     // Check if individual has a day of birth
     if (!StringUtils.isNullOrEmpty(dayOfBirth)) {
