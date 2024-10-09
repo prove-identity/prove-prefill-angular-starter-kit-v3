@@ -1,0 +1,17 @@
+.main-content {
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 80vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  overflow: hidden;
+}

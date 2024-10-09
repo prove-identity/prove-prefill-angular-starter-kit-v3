@@ -1,0 +1,64 @@
+<ng-container *ngIf="isLoading">
+  <div class="container">
+    <mat-progress-spinner mode="indeterminate" />
+  </div>
+</ng-container>
+<ng-container *ngIf="!isLoading">
+  <div class="fadeIn">
+    <div style="display: flex; flex-direction: column; gap: 16px">
+      <!-- Title -->
+      <h1
+        style="
+          text-align: left;
+          font-weight: bold;
+          font-size: 2.125rem;
+          margin: 0;
+        "
+      >
+        {{ t("smsWaiting.title") }}
+      </h1>
+      <!-- Subtitle -->
+      <h2
+        style="
+          text-align: left;
+          font-weight: bold;
+          padding-bottom: 8px;
+          font-size: 1.5rem;
+          margin: 0;
+        "
+      >
+        {{ t("smsWaiting.subTitle") }}
+        <span style="display: inline-block">
+          {{ formatPhoneNumber(phoneNumber) }}
+        </span>
+      </h2>
+      <!-- Content -->
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+        "
+      >
+        <img
+          class="fadeIn"
+          [width]="80"
+          [height]="80"
+          src="/phoneImage.jpg"
+          alt="Phone Image"
+        />
+      </div>
+      <div class="bottom-container">
+        <p style="font-size: 1rem; margin: 0">
+          {{ t("smsWaiting.didNotRecieve") }}
+        </p>
+        <app-prove-button
+          [isLoading]="isLoading"
+          [isDisabled]="isLoading"
+          (onClick)="handleReturnToChallengePage()"
+        />
+      </div>
+    </div>
+  </div>
+</ng-container>

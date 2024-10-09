@@ -1,69 +1,71 @@
-<div class="container">
-  <img src="proveLogo-light.svg" />
-  <h3 layout-align="center">Let's begin by finding your info</h3>
-  <h5>
-    We can prefill some of this request like your name, address, and contact
-    info for you.
-  </h5>
-  <div></div>
-  <!--   divs necessary for grid alignment   -->
-  <div></div>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="outline" color="primary" floatLabel="always">
-      <mat-label>Social Security Number</mat-label>
-      <input
-        id="ssn"
-        name="ssn"
-        formControlName="ssn"
-        matInput
-        placeholder="*** **"
-        maxlength="4"
-      />
-      <mat-error *ngIf="form.get('ssn')?.invalid && form.get('ssn')?.touched">
-        {{ getSSNErrorMessage() }}
-      </mat-error>
-    </mat-form-field>
-    <p>
-      By providing your last 4 of your SSN, we will attempt to find your
-      information to expedite your request.
-    </p>
-
-    <mat-form-field appearance="outline" floatLabel="always">
-      <mat-label>Phone Number</mat-label>
-      <input
-        id="phoneNumber"
-        formControlName="phoneNumber"
-        matInput
-        placeholder="+1"
-      />
-      <mat-error
-        *ngIf="
-          form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched
-        "
+<ng-container *ngIf="isLoading; else content">
+  <div class="loading-container">
+    <mat-progress-spinner mode="indeterminate" diameter="50" color="primary" />
+  </div>
+</ng-container>
+<ng-template #content>
+  <form [formGroup]="form">
+    <div class="main-content">
+      <!-- Title -->
+      <div>
+        <h1 mat-title class="challenge-title">
+          {{ t("challengePage.title") }}
+        </h1>
+      </div>
+      <!-- Subtitle -->
+      <div>
+        <h2 mat-subheading class="challenge-subtitle">
+          {{ t("challengePage.subTitle") }}
+        </h2>
+      </div>
+      <!-- Error Message -->
+      <div *ngIf="error">
+        <p class="error-text">{{ error }}</p>
+      </div>
+      <!-- Last 4 SSN Field -->
+      <mat-form-field
+        appearance="outline"
+        floatLabel="always"
+        class="full-width"
       >
-        {{ getPhoneErrorMessage() }}
-      </mat-error>
-    </mat-form-field>
-
-    <p class="second">
-      By clicking 'Continue' you accept our
-      <a
-        href="https://www.prove.com/legal/overview#End-User-Terms-Conditions"
-        class="blues"
-        target="_blank"
-        >TERMS AND CONDITIONS</a
+        <mat-label>{{ t("dataCollection.ssn.label") }}</mat-label>
+        <span matPrefix style="font-size: 1.2rem; font-weight: bold"
+          >*** **</span
+        >
+        <input matInput type="text" maxlength="4" formControlName="last4SSN" />
+        <mat-error *ngIf="getSSNErrorMessage()">
+          {{ getSSNErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+      <p class="info-text">
+        {{ t("dataCollection.ssn.moreInfo") }}
+      </p>
+      <!-- Phone Number Field -->
+      <mat-form-field
+        appearance="outline"
+        floatLabel="always"
+        class="full-width"
       >
-    </p>
-    <div style="text-align: left" class="buttondiv">
-      <button
-        mat-fab
-        color="primary"
-        type="submit"
-        [disabled]="!form.valid"
-        (click)="(handleContinueButton)"
-      >
-        CONTINUE
-      </button>
+        <mat-label>{{ t("dataCollection.phone.label") }}</mat-label>
+        <span matPrefix style="padding-left: 8px">+1</span>
+        <input matInput id="phoneNumber" formControlName="phoneNumber" />
+        <mat-error
+          *ngIf="
+            form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched
+          "
+        >
+          {{ getPhoneErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+      <div class="bottom-container">
+        <app-auth-agreement-page />
+        <app-prove-button
+          [isLoading]="isLoading"
+          [isSubmitting]="isSubmitting"
+          [isDisabled]="!isDirty() || !isValid() || isLoading"
+          (onClick)="onSubmit()"
+        />
+      </div>
     </div>
   </form>
-</div>
+</ng-template>

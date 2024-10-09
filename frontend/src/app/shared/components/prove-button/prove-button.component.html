@@ -1,0 +1,9 @@
+<button
+  mat-raised-button
+  size="large"
+  [ngClass]="isDarkMode ? 'dark' : 'light'"
+  [disabled]="isDisabled"
+  (click)="handleBtnClick()"
+>
+  {{ isLoading || isSubmitting ? "Loading..." : "Continue" }}
+</button>

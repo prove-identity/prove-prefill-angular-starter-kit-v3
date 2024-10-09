@@ -1,84 +1,75 @@
 import {
-  Component,
   Inject,
+  OnInit,
+  Component,
   OnChanges,
   OnDestroy,
-  OnInit,
   SimpleChanges,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { NgIf } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
-import { FormStateService } from '../../prove/prove-service/form-state.service';
-import PhoneNumberInput from '@prove-identity/prove-auth/build/lib/proveauth/internal/phone-number-input';
-import { ProveApiService } from '../../prove/prove-service/prove-api.service';
-import { AuthService } from '../../auth/auth.service';
-import { DeviceService } from '../../device/device.service';
+import { Observable } from 'rxjs';
+import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { APP_CONFIG } from '@/src/app/config/app.config';
+import { AuthService } from '@/src/app/core/auth/auth.service';
 import { AuthFinishStepInput } from '@prove-identity/prove-auth';
-import { APP_CONFIG } from '../../../config/app.config';
-import { IAppConfig } from '../../../config/app-config.interface';
-import { ProveClientSdk } from '../../prove/prove-client-sdk';
+import { IAppConfig } from '@/src/app/config/app-config.interface';
+import { DeviceService } from '@/src/app/core/device/device.service';
+import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ProveClientSdk } from '@/src/app/core/prove/prove-client-sdk';
+import { MatError, MatFormField, MatLabel } from '@angular/material/input';
+import { ProveApiService } from '@/src/app/core/prove/prove-service/prove-api.service';
+import PhoneNumberInput from '@prove-identity/prove-auth/build/lib/proveauth/internal/phone-number-input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ProveButtonComponent } from '@/src/app/shared/components/prove-button/prove-button.component';
 
 @Component({
-  selector: 'app-challenge-page',
   standalone: true,
+  selector: 'app-challenge-page',
   templateUrl: './sms-waiting-page.component.html',
   styleUrl: './sms-waiting-page.component.css',
   imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    NgIf,
-    NgIf,
-    ProveClientSdk,
-    RouterModule,
-    FormsModule,
-    RouterModule,
+    MatLabel,
+    MatError,
+    CommonModule,
+    MatFormField,
+    TranslateModule,
+    ProveButtonComponent,
+    MatProgressSpinnerModule,
+    NgxMatIntlTelInputComponent,
   ],
 })
 export class SMSWaitingComponent implements OnInit, OnChanges, OnDestroy {
-  @Inject(APP_CONFIG) public config: IAppConfig;
-
-  //Get Phone number from context (Set in ChallengePage)
-  phoneNumber;
-  //Auth Ref
-  authRef = null;
-  // Config
-  loading: boolean = true;
+  phoneNumber: string = '';
+  authRef: any;
+  isLoading: boolean = true;
 
   constructor(
-    private formStateService: FormStateService,
-    private fb: FormBuilder,
-    private router: Router,
-    private proveClientSDK: ProveClientSdk,
-    private proveService: ProveApiService,
-    private authService: AuthService,
-    private deviceService: DeviceService
+    private readonly fb: FormBuilder,
+    private readonly router: Router,
+    private readonly proveClientSDK: ProveClientSdk,
+    private readonly proveService: ProveApiService,
+    private readonly authService: AuthService,
+    private readonly deviceService: DeviceService,
+    private readonly translate: TranslateService,
+    @Inject(APP_CONFIG) public config: IAppConfig
   ) {}
 
   ngOnInit(): void {
-    this.phoneNumber = this.deviceService.phoneNumber;
-    if (this.authService.authToken) {
+    this.phoneNumber = this.deviceService.phoneNumber();
+    if (!this.authService.authToken()) {
       this.router.navigate(['/challenge']);
     }
-    this.sendInstantLink(this.authService.authToken as string);
+    this.sendInstantLink(this.authService.authToken() as string);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.phoneNumber = this.deviceService.phoneNumber;
-    if (this.authService.authToken) {
+    this.phoneNumber = this.deviceService.phoneNumber();
+    if (this.authService.authToken()) {
       this.router.navigate(['/challenge']);
     }
-    this.sendInstantLink(this.authService.authToken as string);
+    this.sendInstantLink(this.authService.authToken() as string);
   }
 
   ngOnDestroy(): void {
@@ -88,13 +79,17 @@ export class SMSWaitingComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  t(key: string): string {
+    return this.translate.instant(key);
+  }
+
   async sendInstantLink(authToken: string) {
     try {
       //if API_BASE_URL is set in .env, then call real endpoint
       if (this.config.app_base_url) {
         const builder = this.proveClientSDK.handleInstantLink(
-          this.instantLinkStartStep,
-          this.authFinishStep
+          this.instantLinkStartStep.bind(this),
+          this.authFinishStep.bind(this)
         );
         //set ref to builder instance to clear on unmount
         this.authRef = builder.authenticate(authToken);
@@ -110,7 +105,7 @@ export class SMSWaitingComponent implements OnInit, OnChanges, OnDestroy {
     } catch (e) {
       console.log('error: ', e);
     } finally {
-      this.loading = false;
+      this.isLoading = false;
     }
   }
 
@@ -136,21 +131,25 @@ export class SMSWaitingComponent implements OnInit, OnChanges, OnDestroy {
         // Phone number not needed, resolve with null
         resolve(null);
       }
-      this.loading = false;
+      this.isLoading = false;
     });
   }
 
   async authFinishStep(input: AuthFinishStepInput): Promise<any> {
     //On successful authFinish, call /v3ValidateRequest
     try {
-      const response = await this.proveService.v3ValidateRequest({
-        correlationId: this.authService.correlationId as string,
+      const observable = this.proveService.v3ValidateRequest({
+        correlationId: this.authService.correlationId() as string,
+      }) as Observable<any>;
+
+      observable.subscribe((response: any) => {
+        if (response && response.data) {
+          const { next, success, challengeMissing } = response.data;
+          this.authService.setNextStep(next);
+          return this.router.navigate(['/review' + location.search]);
+        }
+        return null;
       });
-      if (response.data) {
-        const { next, success, challengeMissing } = response.data;
-        this.authService.setNextStep(next);
-        return this.router.navigate(['/review' + location.search]);
-      }
     } catch (e: any) {
       console.log('error: ', e);
     }
@@ -170,5 +169,6 @@ export class SMSWaitingComponent implements OnInit, OnChanges, OnDestroy {
     if (match) {
       return match[4];
     }
+    return null;
   }
 }

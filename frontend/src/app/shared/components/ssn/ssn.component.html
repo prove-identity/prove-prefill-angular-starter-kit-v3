@@ -1,0 +1,11 @@
+<form [formGroup]="form">
+  <mat-form-field appearance="outline" floatLabel="always" class="full-width">
+    <mat-label>{{ t("dataCollection.ssn.label") }}</mat-label>
+    <span matPrefix class="ssn-prefix">*** **</span>
+    <input matInput formControlName="ssn" type="number" maxlength="4" />
+    <mat-hint>{{ t("dataCollection.ssn.disclaimer") }}</mat-hint>
+    <mat-error *ngIf="form.get('ssn')?.invalid && form.get('ssn')?.touched">
+      {{ getSSNErrorMessage() }}
+    </mat-error>
+  </mat-form-field>
+</form>

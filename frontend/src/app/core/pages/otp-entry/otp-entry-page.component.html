@@ -1,0 +1,125 @@
+<!-- Loading State -->
+<ng-container *ngIf="isLoading; else content">
+  <div
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 16px;
+      background: transparent;
+      z-index: 2147483648;
+    "
+  >
+    <mat-progress-spinner mode="indeterminate" />
+  </div>
+</ng-container>
+
+<ng-template #content>
+  <div class="fadeInSlow" style="margin-bottom: 8px; flex-grow: 1">
+    <div class="main-content">
+      <ng-container *ngIf="otpSent; else sendingOtp">
+        <!-- Title -->
+        <div style="grid-column: span 12; margin-bottom: 16px">
+          <h2
+            style="
+              text-align: left;
+              font-weight: bold;
+              padding-bottom: 8px;
+              margin-bottom: 16px;
+              font-size: 1.25rem;
+            "
+          >
+            {{ t("otpEntry.title") }}
+          </h2>
+        </div>
+        <!-- OTP Input Fields -->
+        <div
+          style="
+            grid-column: span 12;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <mat-form-field
+            *ngFor="let value of otp; let i = index"
+            appearance="outline"
+            floatLabel="always"
+          >
+            <input
+              matInput
+              type="tel"
+              maxlength="1"
+              [(ngModel)]="otp[i]"
+              #otpInput
+              (input)="handleOtpChange($event, i)"
+              (keydown)="handleOtpKeyDown($event, i)"
+              (paste)="handlePaste($event)"
+            />
+          </mat-form-field>
+        </div>
+        <!-- Error Message -->
+        <div style="grid-column: span 12">
+          <div *ngIf="errorMsg" style="margin-top: 16px">
+            <p style="color: red; text-align: center">
+              {{ t("errorMsg") }}
+            </p>
+          </div>
+        </div>
+      </ng-container>
+      <!-- Sending OTP or Error State -->
+      <ng-template #sendingOtp>
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              gap: 16px;
+              align-items: center;
+              flex-wrap: wrap;
+            "
+          >
+            <ng-container *ngIf="!isError; else failureSendingOtp">
+              <div>
+                <mat-progress-spinner [diameter]="80" mode="indeterminate" />
+                <div style="margin-top: 16px">
+                  <p style="text-align: center">
+                    {{ t("otpEntry.sendingOtp") }}
+                  </p>
+                </div>
+              </div>
+            </ng-container>
+            <ng-template #failureSendingOtp>
+              <div>
+                <mat-progress-spinner
+                  color="warn"
+                  [diameter]="80"
+                  mode="indeterminate"
+                ></mat-progress-spinner>
+                <div style="margin-top: 16px">
+                  <p style="color: red; text-align: center; font-size: 1rem">
+                    {{ t("otpEntry.failureSendingOtp") }}
+                  </p>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+    <div style="margin-top: auto; width: 100%">
+      <app-prove-button
+        [isLoading]="isLoading"
+        [isDisabled]="isVerifyButtonEnabled"
+        (onClick)="handleVerifyOTP()"
+      />
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,95 @@
+.main-content {
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 80vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  overflow: hidden;
+}
+
+mat-hint {
+  font-family: Gellix, sans-serif;
+  font-weight: 100;
+  text-align: left;
+}
+
+mat-form-field {
+  width: 100%;
+  font-family: Gellix, sans-serif;
+  height: 75px;
+  appearance: fill;
+  align-items: center;
+  grid-column: 2;
+  color: black;
+  padding-left: 24px;
+}
+
+img {
+  grid-column: 2;
+  padding-top: 55px;
+  padding-bottom: 25px;
+  width: 74px;
+}
+
+mat-date-picker {
+  font-family: Gellix, sans-serif;
+  appearance: fill;
+  align-items: center;
+  grid-column: 2;
+  color: black;
+  width: 50%;
+  height: 50px;
+}
+
+.buttondiv {
+  padding-left: 24px;
+  padding-top: 12px;
+}
+
+.half {
+  width: 39.7%;
+  font-family: Gellix, sans-serif;
+  height: 75px;
+  appearance: fill;
+  grid-column: 2;
+  color: black;
+}
+
+.halfstate {
+  width: 39.7%;
+  font-family: Gellix, sans-serif;
+  height: 75px;
+  appearance: fill;
+  grid-column: 2;
+  color: black;
+}
+
+mat-label {
+  font-family: Gellix, sans-serif;
+  appearance: fill;
+}
+
+mat-error {
+  font-family: Gellix, sans-serif;
+  grid-column: 2;
+  font-size: 8px;
+  margin-top: 0px;
+  text-align: left;
+}
+
+mat-select {
+  min-width: 100%;
+}
+
+state-panel {
+  font-size: 10px;
+}

@@ -1,0 +1,36 @@
+<ng-container *ngIf="isLoading || form?.pending; else content">
+  <div class="loading-container">
+    <mat-progress-spinner mode="indeterminate" />
+  </div>
+</ng-container>
+<!-- Main Content -->
+<ng-template #content>
+  <div class="main-content">
+    <div class="header">
+      <h1 matTypography class="mat-h4 mat-font-weight-bold">
+        {{ t("reviewInfo.title") }}
+      </h1>
+      <h2 matTypography class="mat-h6 mat-font-weight-bold">
+        {{ t("reviewInfo.subTitle") }}
+      </h2>
+    </div>
+    <div class="main-content">
+      <app-user-input [form]="form" />
+      <app-address-input
+        [form]="form"
+        (onRegionChanged)="getRegionAddressValue()"
+      />
+      <!-- Date of Birth -->
+      <app-dob [form]="form" />
+      <app-ssn [form]="form" />
+      <div class="submit-button">
+        <app-prove-button
+          [isLoading]="isLoading"
+          [isSubmitting]="isSubmitting"
+          [isDisabled]="isSubmitting"
+          (onClick)="onSubmit()"
+        />
+      </div>
+    </div>
+  </div>
+</ng-template>

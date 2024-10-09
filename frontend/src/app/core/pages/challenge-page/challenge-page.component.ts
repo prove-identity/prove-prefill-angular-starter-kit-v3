@@ -1,25 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
-  FormBuilder,
   FormGroup,
   Validators,
-  ReactiveFormsModule,
+  FormBuilder,
   FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { NgIf } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { FormStateService } from '../../prove/prove-service/form-state.service';
-import { Router } from '@angular/router'; // Import Router
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
-import { ProveApiService } from '../../prove/prove-service/prove-api.service';
-import { AuthService } from '../../auth/auth.service';
-import { DeviceService } from '../../device/device.service';
-import { ProveClientSdk } from '../../prove/prove-client-sdk';
-import { ChallengePageData } from '../../prove/prove-service/apis/challengeRequest';
-import { AppEnv } from '../../prove/prove-service/(definitions)';
+import { TranslateService } from '@ngx-translate/core';
+import { ProveClientSdk } from '@/src/app/core/prove/prove-client-sdk';
+import { ProveApiService } from '@/src/app/core/prove/prove-service/prove-api.service';
+import { AuthService } from '@/src/app/core/auth/auth.service';
+import { DeviceService } from '@/src/app/core/device/device.service';
+import { AppEnv } from '@/src/app/core/prove/prove-service/(definitions)';
+import { ChallengePageData } from '@/src/app/core/prove/prove-service/apis/challengeRequest';
+
+import {
+  MatProgressSpinner,
+  MatProgressSpinnerModule,
+} from '@angular/material/progress-spinner';
+import {
+  MatError,
+  MatHint,
+  MatLabel,
+  MatFormField,
+  MatInputModule,
+} from '@angular/material/input';
+import { MatCard } from '@angular/material/card';
+import { MatOption, MatSelect } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { AuthAgreementComponent } from '@/src/app/shared/components/auth-agreement/auth-agreement.component';
+import { ProveButtonComponent } from '@/src/app/shared/components/prove-button/prove-button.component';
 
 @Component({
   selector: 'app-challenge-page',
@@ -27,67 +41,46 @@ import { AppEnv } from '../../prove/prove-service/(definitions)';
   templateUrl: './challenge-page.component.html',
   styleUrl: './challenge-page.component.css',
   imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
     NgIf,
-    RouterModule,
+    NgFor,
+    MatLabel,
+    MatError,
+    MatHint,
+    MatCard,
+    MatSelect,
+    MatOption,
+    CommonModule,
+    MatFormField,
+    MatProgressSpinner,
     FormsModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    ProveButtonComponent,
+    AuthAgreementComponent,
     NgxMatIntlTelInputComponent,
+    MatProgressSpinnerModule,
   ],
 })
-export class ChallengePageComponent implements OnInit {
+export class ChallengePageComponent {
   form: FormGroup;
-  error: string = '';
-
-  //Setup Validation Schema for form validation (passing appEnv)
-
-  async handleContinueButton(data: ChallengePageData) {
-    try {
-      const { last4SSN, phoneNumber } = data;
-      this.deviceService.setPhoneNumber(phoneNumber);
-      // Call /start endpoint here - v3StartRequest
-      const response = await this.proveService.v3StartRequest({
-        isMobile: this.deviceService.isMobile,
-        phoneNumber,
-        last4SSN,
-        finalTargetUrl: 'http://127.0.0.1:3000/sms-result',
-      });
-
-      const { data: startResponse } = response;
-
-      // Save authToken and correlationId in AuthProvider
-      // for use in the SMSWaiting Page to avoid passing auth tokens in url
-      this.authService.setAuthToken(startResponse.authToken);
-      this.authService.setCorrelationId(startResponse.correlationId);
-      this.authService.setNextStep(startResponse.next);
-      // redirect users to appropriate page depending on flowType ('desktop' | 'mobile')
-      const smsWaitingPath =
-        (this.deviceService.isMobile ? '/sms-otp' : '/sms-waiting') +
-        location.search;
-      this.router.navigate([smsWaitingPath]);
-    } catch (err) {
-      console.error('API call failed:', err);
-      this.error =
-        'An error occurred while processing your request. Please try again.';
-      // Set error message
-    }
-  }
+  isLoading = false;
+  error: string | null = null;
+  isSubmitting = false;
 
   constructor(
-    private formStateService: FormStateService,
-    private fb: FormBuilder,
-    private router: Router,
-    private proveClientSDK: ProveClientSdk,
-    private proveService: ProveApiService,
-    private authService: AuthService,
-    private deviceService: DeviceService
+    private readonly fb: FormBuilder,
+    private readonly router: Router,
+    private readonly proveClientSDK: ProveClientSdk,
+    private readonly proveService: ProveApiService,
+    private readonly authService: AuthService,
+    private readonly deviceService: DeviceService,
+    private readonly translate: TranslateService
   ) {
     const phoneValidationLength =
-      this.authService.appEnv === AppEnv.SANDBOX ? 12 : 10;
+      this.authService.appEnv() === AppEnv.SANDBOX ? 12 : 10;
     this.form = this.fb.group({
-      ssn: [
+      last4SSN: [
         '',
         [Validators.required, Validators.minLength(4), Validators.maxLength(4)],
       ],
@@ -98,31 +91,67 @@ export class ChallengePageComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.formStateService.currentState.subscribe((state) => {
-      this.form.patchValue(state, { emitEvent: false });
-    });
+  isDirty(): boolean {
+    return this.form.dirty;
+  }
 
-    this.form.valueChanges.subscribe((newState) => {
-      this.formStateService.updateState(newState);
-    });
+  isValid(): boolean {
+    return this.form.valid;
+  }
+
+  t(key: string): string {
+    return this.translate.instant(key);
+  }
+
+  async handleContinueButton(data: ChallengePageData) {
+    try {
+      const { last4SSN, phoneNumber } = data;
+      this.deviceService.setPhoneNumber(phoneNumber);
+      // Call /start endpoint here - v3StartRequest
+      const response = this.proveService.v3StartRequest({
+        isMobile: this.deviceService.isMobile(),
+        phoneNumber,
+        last4SSN,
+      }) as Observable<any>;
+
+      response.subscribe((res: any) => {
+        const { data: startResponse } = res;
+        // Save authToken and correlationId in AuthProvider
+        // for use in the SMSWaiting Page to avoid passing auth tokens in url
+        this.authService.setAuthToken(startResponse.authToken);
+        this.authService.setCorrelationId(startResponse.correlationId);
+        this.authService.setNextStep(startResponse.next);
+        // redirect users to appropriate page depending on flowType ('desktop' | 'mobile')
+        const smsWaitingPath =
+          (this.deviceService.isMobile() ? '/sms-otp' : '/sms-waiting') +
+          location.search;
+        this.router.navigate([smsWaitingPath]);
+      });
+    } catch (err) {
+      console.error('API call failed:', err);
+      this.error =
+        'An error occurred while processing your request. Please try again.';
+      // Set error message
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   onSubmit() {
+    this.isLoading = true;
     if (this.form.valid) {
-      console.log('Form Submitted:', this.form.value);
       // Test Navigate to another page, e.g., '/sms-waiting'
-      this.router.navigate(['/sms-waiting']);
-      this.proveService.v3ChallengeRequest(this.form.value);
+      this.handleContinueButton(this.form.value);
     } else {
       console.error('Form is invalid');
+      this.isLoading = false;
     }
   }
 
   getSSNErrorMessage() {
-    const control = this.form.get('ssn');
+    const control = this.form.get('last4SSN');
     if (control?.hasError('required')) {
-      return 'SSN is required';
+      return this.t('dataCollection.ssn.errorText');
     }
     if (control?.hasError('minlength') || control?.hasError('maxlength')) {
       return 'Must be exactly 4 digits';
