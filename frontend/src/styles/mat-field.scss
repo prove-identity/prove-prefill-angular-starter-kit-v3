@@ -1,0 +1,27 @@
+.mdc-text-field--filled {
+  max-height: 45px;
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+}
+
+.mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 10px !important;
+}
+
+.mdc-text-field--focused {
+  .mdc-notched-outline__leading {
+    border-color: #90caf9 !important;
+  }
+
+  .mdc-notched-outline__notch {
+    border-color: #90caf9 !important;
+  }
+
+  .mdc-notched-outline__trailing {
+    border-color: #90caf9 !important;
+  }
+}
+
+.mat-mdc-form-field-flex .mat-mdc-form-field-icon-prefix {
+  padding-left: 12px;
+}

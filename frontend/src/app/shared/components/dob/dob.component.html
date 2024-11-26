@@ -1,0 +1,14 @@
+<form [formGroup]="form">
+  <mat-form-field appearance="outline" floatLabel="always" class="full-width">
+    <mat-label>{{ t("dataCollection.dob.label") }}</mat-label>
+    <input matInput 
+           [matDatepicker]="picker" 
+           formControlName="dob" 
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker" />
+    <mat-datepicker #picker />
+    <mat-error *ngIf="form.get('dob')?.invalid && form.get('dob')?.touched">
+      {{ getDobErrorMessage() }}
+    </mat-error>
+  </mat-form-field>
+</form>

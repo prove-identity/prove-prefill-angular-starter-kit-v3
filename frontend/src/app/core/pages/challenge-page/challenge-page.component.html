@@ -1,0 +1,71 @@
+<ng-container *ngIf="isLoading; else content">
+  <div class="loading-container">
+    <mat-progress-spinner mode="indeterminate" diameter="50" color="primary" />
+  </div>
+</ng-container>
+<ng-template #content>
+  <form [formGroup]="form">
+    <div class="main-content">
+      <!-- Title -->
+      <div>
+        <h1 mat-title class="challenge-title">
+          {{ t("challengePage.title") }}
+        </h1>
+      </div>
+      <!-- Subtitle -->
+      <div>
+        <h2 mat-subheading class="challenge-subtitle">
+          {{ t("challengePage.subTitle") }}
+        </h2>
+      </div>
+      <!-- Error Message -->
+      <div *ngIf="error">
+        <p class="error-text">{{ error }}</p>
+      </div>
+      <!-- Last 4 SSN Field -->
+      <mat-form-field
+        appearance="outline"
+        floatLabel="always"
+        class="full-width"
+      >
+        <mat-label>{{ t("dataCollection.ssn.label") }}</mat-label>
+        <span matPrefix style="font-size: 1.2rem; font-weight: bold"
+          >*** **</span
+        >
+        <input matInput type="text" maxlength="4" formControlName="last4SSN" />
+        <mat-error *ngIf="getSSNErrorMessage()">
+          {{ getSSNErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+      <p class="info-text">
+        {{ t("dataCollection.ssn.moreInfo") }}
+      </p>
+      <!-- Phone Number Field -->
+      <mat-form-field
+        appearance="outline"
+        floatLabel="always"
+        class="full-width"
+      >
+        <mat-label>{{ t("dataCollection.phone.label") }}</mat-label>
+        <span matPrefix style="padding-left: 8px">+1</span>
+        <input matInput id="phoneNumber" formControlName="phoneNumber" />
+        <mat-error
+          *ngIf="
+            form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched
+          "
+        >
+          {{ getPhoneErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+      <div class="bottom-container">
+        <app-auth-agreement-page />
+        <app-prove-button
+          [isLoading]="isLoading"
+          [isSubmitting]="isSubmitting"
+          [isDisabled]="!isDirty() || !isValid() || isLoading"
+          (onClick)="onSubmit()"
+        />
+      </div>
+    </div>
+  </form>
+</ng-template>

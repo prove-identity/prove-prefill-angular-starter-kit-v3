@@ -1,0 +1,30 @@
+.custom-typography {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-family: Gellix, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.terms-button {
+  padding: 0;
+  min-width: auto;
+  line-height: inherit;
+  vertical-align: baseline;
+  text-transform: none;
+}
+
+.terms-button.mat-button {
+  background: none;
+}
+
+.terms-button.mat-button:hover {
+  background: none;
+}
+
+a {
+  margin-left: 8px;
+  color: #90caf9;
+}

@@ -1,0 +1,18 @@
+<div
+  class="fadeIn"
+  fxLayoutGap="16px"
+  fxLayout="column"
+  fxLayoutAlign="center center"
+>
+  <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="8px">
+    <h1 matTypography class="mat-h4 mat-font-weight-bold">{{ title }}</h1>
+    <p matTypography class="message">{{ message }}</p>
+  </div>
+  <img
+    class="fadeIn"
+    width="70"
+    height="70"
+    [src]="imageSrc"
+    alt="Verification {{ isSuccess ? 'Success' : 'Failure' }}"
+  />
+</div>

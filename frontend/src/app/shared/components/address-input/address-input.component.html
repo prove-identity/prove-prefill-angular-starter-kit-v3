@@ -1,0 +1,71 @@
+<form [formGroup]="form" class="address-form">
+  <div class="grid-container">
+    <!-- Address Field -->
+    <mat-form-field appearance="outline" floatLabel="always" class="full-width">
+      <mat-label>{{ t("dataCollection.address.label") }}</mat-label>
+      <input matInput formControlName="address" type="text" />
+      <mat-error
+        *ngIf="form.get('address')?.invalid && form.get('address')?.touched"
+      >
+        {{ getErrorMessage("address", "dataCollection.address.errorText") }}
+      </mat-error>
+    </mat-form-field>
+    <!-- Extended Address Field -->
+    <mat-form-field appearance="outline" floatLabel="always" class="full-width">
+      <mat-label>{{ t("dataCollection.extendedAddress.label") }}</mat-label>
+      <input matInput formControlName="extendedAddress" type="text" />
+    </mat-form-field>
+    <!-- City Field -->
+    <mat-form-field appearance="outline" floatLabel="always" class="full-width">
+      <mat-label>{{ t("dataCollection.city.label") }}</mat-label>
+      <input matInput formControlName="city" type="text" />
+      <mat-error *ngIf="form.get('city')?.invalid && form.get('city')?.touched">
+        {{ getErrorMessage("city", "dataCollection.city.error.required") }}
+      </mat-error>
+    </mat-form-field>
+    <!-- Region and Postal Code Fields -->
+    <div class="row">
+      <!-- Region Select -->
+      <mat-form-field
+        appearance="outline"
+        floatLabel="always"
+        class="half-width"
+      >
+        <mat-label>{{ t("dataCollection.region.label") }}</mat-label>
+        <mat-select formControlName="region">
+          <mat-option *ngFor="let state of states" [value]="state.shortCode">
+            {{ state.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="form.get('region')?.invalid && form.get('region')?.touched"
+        >
+          {{ getErrorMessage("region", "dataCollection.region.errorText") }}
+        </mat-error>
+      </mat-form-field>
+      <!-- Postal Code Input -->
+      <mat-form-field
+        appearance="outline"
+        floatLabel="always"
+        class="half-width"
+      >
+        <mat-label>{{ t("dataCollection.postalCode.label") }}</mat-label>
+        <input
+          matInput
+          formControlName="postalCode"
+          type="text"
+          maxlength="12"
+        />
+        <mat-error
+          *ngIf="
+            form.get('postalCode')?.invalid && form.get('postalCode')?.touched
+          "
+        >
+          {{
+            getErrorMessage("postalCode", "dataCollection.postalCode.errorText")
+          }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+</form>

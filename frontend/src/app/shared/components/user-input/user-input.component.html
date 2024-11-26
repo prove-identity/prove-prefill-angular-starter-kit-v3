@@ -1,0 +1,22 @@
+<form [formGroup]="form">
+  <div class="row">
+    <mat-form-field appearance="outline" floatLabel="always" class="full-width">
+      <mat-label>{{ t("dataCollection.firstName.label") }}</mat-label>
+      <input matInput formControlName="firstName" type="text" />
+      <mat-error
+        *ngIf="form.get('firstName')?.invalid && form.get('firstName')?.touched"
+      >
+        {{ getFirstNameErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" floatLabel="always" class="full-width">
+      <mat-label>{{ t("dataCollection.lastName.label") }}</mat-label>
+      <input matInput formControlName="lastName" type="text" />
+      <mat-error
+        *ngIf="form.get('lastName')?.invalid && form.get('lastName')?.touched"
+      >
+        {{ getLastNameErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+</form>

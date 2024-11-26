@@ -1,0 +1,7 @@
+<button mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>language</mat-icon>
+</button>
+<mat-menu #menu="matMenu" [overlapTrigger]="false">
+  <button mat-menu-item (click)="changeLang('en')">English</button>
+  <button mat-menu-item (click)="changeLang('es')">Español</button>
+</mat-menu>
