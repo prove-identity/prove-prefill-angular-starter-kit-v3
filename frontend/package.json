@@ -26,7 +26,7 @@
     "@angular/router": "^18.2.7",
     "@angular/ssr": "^18.2.7",
     "express": "^4.18.2",
-    "libphonenumber-js": "^1.11.10",
+    "libphonenumber-js": "^1.12.4",
     "ngx-mat-intl-tel-input": "^5.0.0",
     "rxjs": "~7.8.1",
     "tslib": "^2.7.0",
